@@ -9,9 +9,10 @@
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
-    <Grid VerticalAlignment="Center" HorizontalAlignment="Center">
+	<Grid VerticalAlignment="Center" HorizontalAlignment="Center">
 
 		<usercontrol:UpdateTimerControl x:Name="Timer"></usercontrol:UpdateTimerControl>
 
 	</Grid>
 </Page>
+ 
