@@ -5,11 +5,13 @@
     xmlns:local="using:SimpleTimers"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+	xmlns:usercontrol="using:SimpleTimers.UserControls"
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
-    <Grid>
-		<TextBlock Text="Hello" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="24"/>
+    <Grid VerticalAlignment="Center" HorizontalAlignment="Center">
+
+		<usercontrol:UpdateTimerControl x:Name="Timer"></usercontrol:UpdateTimerControl>
 
 	</Grid>
 </Page>
