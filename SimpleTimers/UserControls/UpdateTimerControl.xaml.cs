@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SimpleTimers.Models;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
@@ -24,7 +25,9 @@ namespace SimpleTimers.UserControls
 		private List<int> _minutes;
 		private List<int> _hours;
 
-		DispatcherTimer Timer = new DispatcherTimer();
+		private DispatcherTimer _dispTimer = new DispatcherTimer();
+
+		public Timer Timer => this.DataContext as Timer;
 
 		public UpdateTimerControl()
 		{
@@ -33,8 +36,8 @@ namespace SimpleTimers.UserControls
 			_minutes = Enumerable.Range(0, 60).ToList();
 			_hours = Enumerable.Range(0, 24).ToList();
 
-			Timer.Tick += UpdateTimerTick;
-			Timer.Interval = new TimeSpan(0, 0, 1);
+			_dispTimer.Tick += UpdateTimerTick;
+			_dispTimer.Interval = new TimeSpan(0, 0, 1);
 
 			this.InitializeComponent();
 		}
