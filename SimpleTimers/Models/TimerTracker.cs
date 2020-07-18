@@ -1,10 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
+﻿using System.Collections.ObjectModel;
 using System.Text.Json;
-using System.Threading.Tasks;
 using Windows.ApplicationModel.Resources;
 using Windows.Storage;
 
@@ -40,7 +35,7 @@ namespace SimpleTimers.Models
 			{
 				Timers = new ObservableCollection<Timer> { new Timer { Name = "1" }, new Timer { Name = "2" } };
 			}
-			
+
 		}
 
 		public ObservableCollection<Timer> Timers { get; private set; }

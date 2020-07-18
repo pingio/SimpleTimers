@@ -11,12 +11,11 @@
 
 	<StackPanel>
 		<TextBlock FontSize="60" HorizontalAlignment="Center" x:Name="CountdownTimer" Text="00:10:00"/>
-
+		<TextBox x:Name="Name" PlaceholderText="Time" TextChanging="NameChanging" />
 		<StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-			<ComboBox x:Name="SelectedHour" SelectedIndex="0" Header="Hours" ItemsSource="{x:Bind Hours}"/>
-			<ComboBox x:Name="SelectedMinute" SelectedIndex="10" Header="Minutes" ItemsSource="{x:Bind Minutes}"/>
-			<ComboBox x:Name="SelectedSecond" SelectedIndex="0" Header="Seconds" ItemsSource="{x:Bind Seconds}"/>
-			<Button Margin="5 0 0 0" VerticalAlignment="Bottom" x:Name="UpdateTimerButton" Content="Update" Click="UpdateTimerButton_Click"/>
+			<ComboBox x:Name="SelectedHour" SelectionChanged="SelectionChanged" SelectedIndex="0" Header="Hours" ItemsSource="{x:Bind Hours}"/>
+			<ComboBox x:Name="SelectedMinute" SelectionChanged="SelectionChanged" SelectedIndex="10" Header="Minutes" ItemsSource="{x:Bind Minutes}"/>
+			<ComboBox x:Name="SelectedSecond" SelectionChanged="SelectionChanged" SelectedIndex="0" Header="Seconds" ItemsSource="{x:Bind Seconds}"/>
 		</StackPanel>
 
 	</StackPanel>

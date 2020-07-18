@@ -10,17 +10,17 @@
     d:DesignWidth="300">
 
     <StackPanel>
-		<TextBlock HorizontalAlignment="Center" Text="{x:Bind Timer.Name, FallbackValue='Test'}"/>
+		<TextBlock HorizontalAlignment="Center" x:Name="Name" Text="{x:Bind Timer.Name, FallbackValue='Test'}"/>
 		<TextBlock FontSize="60" HorizontalAlignment="Center" x:Name="CountdownTimer" Text=""/>
 		<StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
-			<Button Background="DarkTurquoise"  x:Name="Start" Click="Start_Click">
+			<Button Background="DarkTurquoise" x:Name="StartPause" Click="StartStop_Click">
 				<SymbolIcon Symbol="Play"/>
 			</Button>
-			<Button x:Name="Stop" Background="Goldenrod" Margin="5" Click="Stop_Click">
-				<SymbolIcon Symbol="Pause"/>
-			</Button>
-			<Button x:Name="Reset" Background="DarkRed" Click="Reset_Click">
+			<Button x:Name="Reset" Background="DarkRed" Margin="5 0"  Click="Reset_Click">
 				<SymbolIcon Symbol="Refresh"/>
+			</Button>
+			<Button x:Name="Edit" Click="Edit_Click">
+				<SymbolIcon Symbol="Edit"/>
 			</Button>
 		</StackPanel>
 	</StackPanel>

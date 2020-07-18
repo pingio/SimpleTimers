@@ -1,21 +1,8 @@
 ﻿using SimpleTimers.Models;
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.IO;
 using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
-using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Controls.Primitives;
-using Windows.UI.Xaml.Data;
-using Windows.UI.Xaml.Input;
-using Windows.UI.Xaml.Media;
-using Windows.UI.Xaml.Navigation;
-
-// The User Control item template is documented at https://go.microsoft.com/fwlink/?LinkId=234236
 
 namespace SimpleTimers.UserControls
 {
@@ -25,19 +12,16 @@ namespace SimpleTimers.UserControls
 		private List<int> _minutes;
 		private List<int> _hours;
 
-		private DispatcherTimer _dispTimer = new DispatcherTimer();
-
 		public Timer Timer => this.DataContext as Timer;
 
 		public UpdateTimerControl()
 		{
+
 			// This is added because the default time picker does not support seconds.
 			_seconds = Enumerable.Range(0, 60).ToList();
 			_minutes = Enumerable.Range(0, 60).ToList();
 			_hours = Enumerable.Range(0, 24).ToList();
 
-			_dispTimer.Tick += UpdateTimerTick;
-			_dispTimer.Interval = new TimeSpan(0, 0, 1);
 
 			this.InitializeComponent();
 		}
@@ -48,18 +32,25 @@ namespace SimpleTimers.UserControls
 
 		public List<int> Hours => _hours;
 
-
-
-
-
-		private void UpdateTimerTick(Object sender, object e)
+		/// <summary>
+		/// Whenever an hour, minute, or second is updated, update the timerlength and time.
+		/// </summary>
+		private void SelectionChanged(object sender, SelectionChangedEventArgs e)
 		{
-			CountdownTimer.Text = DateTime.Now.ToString("h:mm:ss tt");
+			// This is called as a ContentDialog and is called on load, there will be no selected item, ensures that it does not crash.
+			if (Timer == null || SelectedHour.SelectedItem == null || SelectedMinute.SelectedItem == null || SelectedSecond.SelectedItem == null)
+				return;
+
+			Timer.TimerLength = new TimeSpan((int)SelectedHour.SelectedItem, (int)SelectedMinute.SelectedItem, (int)SelectedSecond.SelectedItem);
+			CountdownTimer.Text = $"{SelectedHour.SelectedItem:D2}:{SelectedMinute.SelectedItem:D2}:{SelectedSecond.SelectedItem:D2}";
 		}
 
-		private void UpdateTimerButton_Click(object sender, RoutedEventArgs e)
+		/// <summary>
+		/// Called whenever the textbox updates, saves the new timer name.
+		/// </summary>
+		private void NameChanging(TextBox sender, TextBoxTextChangingEventArgs args)
 		{
-			CountdownTimer.Text = $"{SelectedHour.SelectedItem:D2}:{SelectedMinute.SelectedItem:D2}:{SelectedSecond.SelectedItem:D2}";
+			Timer.Name = sender.Text;
 		}
 	}
 }

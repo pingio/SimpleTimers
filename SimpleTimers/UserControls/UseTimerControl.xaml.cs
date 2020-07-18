@@ -1,20 +1,8 @@
 ﻿using SimpleTimers.Models;
 using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Diagnostics;
-using System.IO;
-using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
+using System.Threading.Tasks;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Controls.Primitives;
-using Windows.UI.Xaml.Data;
-using Windows.UI.Xaml.Input;
-using Windows.UI.Xaml.Media;
-using Windows.UI.Xaml.Navigation;
 
 // The User Control item template is documented at https://go.microsoft.com/fwlink/?LinkId=234236
 
@@ -27,6 +15,9 @@ namespace SimpleTimers.UserControls
 		private TimeSpan _timerLength;
 		private DispatcherTimer _dispTimer;
 
+		
+
+
 		public UseTimerControl()
 		{
 			_dispTimer = new DispatcherTimer();
@@ -35,16 +26,29 @@ namespace SimpleTimers.UserControls
 
 			
 
+			
+
 			this.InitializeComponent();
 
-			this.DataContextChanged += (s,e) => Bindings.Update();
+			this.DataContextChanged += (s, e) => Bindings.Update();
 
 			this.Loaded += ControlLoaded;
-
-
-
-			
 		}
+
+		/// <summary>
+		/// Loads the alert sound that will sound when the timer hits 0.
+		/// </summary>
+		private async Task LoadSoundAsync()
+		{
+			var _player = new MediaElement();
+			var folder = await Windows.ApplicationModel.Package.Current.InstalledLocation.GetFolderAsync(@"Assets");
+			var file = await folder.GetFileAsync("timer.mp3");
+			var stream = await file.OpenAsync(Windows.Storage.FileAccessMode.Read);
+			
+			_player.SetSource(stream, "audio/mpeg");
+			_player.Play();
+		}
+
 		/// <summary>
 		/// This method is called when the model is loaded. This is allows us to access the underlying datacontext timer.
 		/// </summary>
@@ -61,12 +65,14 @@ namespace SimpleTimers.UserControls
 		/// </summary>
 		private void TimerTick(object sender, object e)
 		{
-			
+
 			_timerLength = _timerLength.Subtract(TimeSpan.FromSeconds(1));
 
-			if(_timerLength.TotalSeconds <= 0)
+			if (_timerLength.TotalSeconds <= 0)
 			{
 				_dispTimer.Stop();
+				LoadSoundAsync().GetAwaiter();
+				
 
 			}
 			CountdownTimer.Text = _timerLength.ToString(@"hh\:mm\:ss");
@@ -86,23 +92,58 @@ namespace SimpleTimers.UserControls
 		}
 
 		/// <summary>
-		/// This button is clicked whenever the Stop button is clicked in the UI.
-		/// It pauses the timer.
-		/// </summary>
-		/// TODO: Merge this functionaltiy with the start button.
-		private void Stop_Click(object sender, RoutedEventArgs e)
-		{
-
-			_dispTimer.Stop();
-		}
-		/// <summary>
 		/// this button starts the timer.
 		/// </summary>
-		private void Start_Click(object sender, RoutedEventArgs e)
+		private void StartStop_Click(object sender, RoutedEventArgs e)
 		{
-			if (!_dispTimer.IsEnabled)
-				_dispTimer.Start();
 
+			if (!_dispTimer.IsEnabled)
+			{
+				if (_timerLength.TotalSeconds == 0)
+					return;
+
+				_dispTimer.Start();
+				StartPause.Content = new SymbolIcon(Symbol.Pause);
+			}
+			else
+			{
+				_dispTimer.Stop();
+				StartPause.Content = new SymbolIcon(Symbol.Play);
+			}
+
+		}
+
+		/// <summary>
+		/// Opens a dialog option to change the timer length and name.
+		/// <seealso cref="UpdateTimerControl"/>
+		/// </summary>
+		private void Edit_Click(object sender, RoutedEventArgs e)
+		{
+			ContentDialog dialog = new ContentDialog()
+			{
+				Content = new UpdateTimerControl(),
+				CloseButtonText = "Close",
+
+			};
+			dialog.DataContext = Timer;
+			dialog.Closing += CloseEditCommand;
+
+			dialog.ShowAsync().GetResults();
+
+
+
+		}
+
+		/// <summary>
+		/// On closing of the dialog, this method gets the datacontext of the dialog <see cref="Timer"/>
+		/// and updates this usercontrol with that timer.
+		/// </summary>
+		private void CloseEditCommand(ContentDialog sender, ContentDialogClosingEventArgs args)
+		{
+			Timer = sender.DataContext as Timer;
+			_timerLength = Timer.TimerLength;
+			CountdownTimer.Text = _timerLength.ToString(@"hh\:mm\:ss");
+			Name.Text = Timer.Name;
 		}
 	}
 }
