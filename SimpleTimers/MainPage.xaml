@@ -8,27 +8,40 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 	xmlns:usercontrol="using:SimpleTimers.UserControls"
     mc:Ignorable="d"
+	MinHeight="200"
+	MinWidth="500"
+	xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
 	<Page.Resources>
 		
 	</Page.Resources>
 
-	<Grid VerticalAlignment="Center" HorizontalAlignment="Center">
+	<Grid Margin="30">
 
-		<ListView ItemsSource="{x:Bind Timers}">
+		<Grid.RowDefinitions>
+			<RowDefinition Height="*"/>
+			<RowDefinition Height="50"/>
+		</Grid.RowDefinitions>
+		
+		<ListView VerticalAlignment="Center" HorizontalAlignment="Center" ItemsSource="{x:Bind models:TimerTracker.Instance.Timers}">
 			<ListView.ItemsPanel>
 				<ItemsPanelTemplate>
-					<StackPanel Background="Transparent" Orientation="Horizontal" />
+					<controls:WrapPanel Background="Transparent" Orientation="Horizontal" />
 				</ItemsPanelTemplate>
 			</ListView.ItemsPanel>
 			<ListView.ItemTemplate>
 				<DataTemplate x:DataType="models:Timer" x:DefaultBindMode="TwoWay">
-					<usercontrol:UseTimerControl />
+					<usercontrol:UseTimerControl Margin="10" />
 				</DataTemplate>
 			</ListView.ItemTemplate>
 		</ListView>
-
+		<Button Grid.Row="1" Click="AddButton_Click" x:Name="AddButton" CornerRadius="50"  Height="50" Width="50" VerticalAlignment="Bottom" HorizontalAlignment="Right">
+			<SymbolIcon Symbol="Add"/>
+		</Button>
+		<Button Grid.Row="1" Click="AlwaysOnTop_Click" Visibility="Collapsed"  x:Name="AlwaysOnTop" CornerRadius="50" Height="50" Width="50" VerticalAlignment="Bottom" HorizontalAlignment="Left">
+			<SymbolIcon Symbol="Pin"/>
+		</Button>
 	</Grid>
 </Page>
  

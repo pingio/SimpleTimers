@@ -13,7 +13,7 @@ namespace SimpleTimers.Models
 		/// <summary>
 		/// Name of the timer.
 		/// </summary>
-		public string Name { get; set; }
+		public string Name { get; set; } = "Timer";
 
 		/// <summary>
 		/// A unique ID for this specific timer, cannot be changed.

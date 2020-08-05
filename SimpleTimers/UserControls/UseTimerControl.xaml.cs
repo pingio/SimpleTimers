@@ -122,12 +122,14 @@ namespace SimpleTimers.UserControls
 			ContentDialog dialog = new ContentDialog()
 			{
 				Content = new UpdateTimerControl(),
-				CloseButtonText = "Close",
+				CloseButtonText = "Save",
+				PrimaryButtonText = "Delete",
+
 
 			};
 			dialog.DataContext = Timer;
-			dialog.Closing += CloseEditCommand;
-
+			dialog.CloseButtonClick += CloseEditCommand;
+			dialog.PrimaryButtonClick += DeleteEditCommand;
 			dialog.ShowAsync().GetResults();
 
 
@@ -138,12 +140,24 @@ namespace SimpleTimers.UserControls
 		/// On closing of the dialog, this method gets the datacontext of the dialog <see cref="Timer"/>
 		/// and updates this usercontrol with that timer.
 		/// </summary>
-		private void CloseEditCommand(ContentDialog sender, ContentDialogClosingEventArgs args)
+		private void CloseEditCommand(ContentDialog sender, ContentDialogButtonClickEventArgs args)
 		{
 			Timer = sender.DataContext as Timer;
 			_timerLength = Timer.TimerLength;
 			CountdownTimer.Text = _timerLength.ToString(@"hh\:mm\:ss");
 			Name.Text = Timer.Name;
 		}
+
+
+		/// <summary>
+		/// Deletes the timer.
+		/// </summary>
+		private void DeleteEditCommand(ContentDialog sender, ContentDialogButtonClickEventArgs args)
+		{
+			Timer = sender.DataContext as Timer;
+			TimerTracker.Instance.Timers.Remove(Timer);
+		}
+
+
 	}
 }

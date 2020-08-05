@@ -10,7 +10,7 @@
     d:DesignWidth="300">
 
     <StackPanel>
-		<TextBlock HorizontalAlignment="Center" x:Name="Name" Text="{x:Bind Timer.Name, FallbackValue='Test'}"/>
+		<TextBlock HorizontalAlignment="Center" x:Name="Name" Text="{x:Bind Timer.Name, FallbackValue='Timer'}"/>
 		<TextBlock FontSize="60" HorizontalAlignment="Center" x:Name="CountdownTimer" Text=""/>
 		<StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
 			<Button Background="DarkTurquoise" x:Name="StartPause" Click="StartStop_Click">
